@@ -17,8 +17,8 @@ h1{font-size:20px}
 .globe{height:60px;background:linear-gradient(90deg,#009B3A,#FED100,#CE1126);border-radius:10px;margin:10px 0;position:relative;overflow:hidden}
 .globe::after{content:'🌍';position:absolute;font-size:40px;animation:slide 3s infinite linear;top:5px}
 @keyframes slide{0%{left:-50px}100%{left:100%}}
-.tabs{display:flex;gap:5px;margin:10px 0}
-.tabs button{flex:1;padding:12px 5px;background:#1a1a1a;color:#888;border:none;border-radius:8px;font-size:14px}
+.tabs{display:flex;gap:5px;margin:10px 0;flex-wrap:wrap}
+.tabs button{flex:1;padding:12px 5px;background:#1a1a1a;color:#888;border:none;border-radius:8px;font-size:13px;min-width:60px}
 .tabs button.active{background:#0084ff;color:#fff}
 .tab{background:#1a1a1a;padding:15px;border-radius:10px;margin:10px 0}
 #output{background:#000;padding:15px;border-radius:8px;margin:10px 0;min-height:150px;text-align:left;font-size:15px;white-space:pre-line;line-height:1.5}
@@ -34,6 +34,10 @@ button{padding:14px 18px;margin:6px 0;background:#0084ff;color:#fff;border:none;
 #status{text-align:center;opacity:0.6;font-size:12px;margin-top:15px}
 .pro-badge{background:#FED100;color:#000;padding:2px 6px;border-radius:4px;font-size:10px;font-weight:bold}
 .source{color:#0084ff;font-size:11px;opacity:0.8}
+.food-section h3{color:#FED100;margin:15px 0 8px 0;font-size:16px}
+.food-section ul{list-style:none;margin-bottom:15px}
+.food-section li{background:#000;padding:10px;border-radius:6px;margin:5px 0;font-size:14px;line-height:1.4}
+.food-section strong{color:#0084ff}
 </style>
 </head>
 <body>
@@ -47,6 +51,7 @@ button{padding:14px 18px;margin:6px 0;background:#0084ff;color:#fff;border:none;
 
   <div class="tabs">
     <button onclick="showTab('ask')" class="active">Ask AI</button>
+    <button onclick="showTab('food')">🍦 Food</button>
     <button onclick="showTab('map')">GPS</button>
     <button onclick="showTab('img')">Images</button>
     <button onclick="showTab('pro')">Pro</button>
@@ -65,6 +70,40 @@ button{padding:14px 18px;margin:6px 0;background:#0084ff;color:#fff;border:none;
       <option value="ht">Haitian Creole</option>
     </select>
     <button onclick="askAI()">Ask AI</button>
+  </div>
+
+  <div id="food" class="tab" style="display:none">
+    <div class="food-section">
+      <h2 style="margin-bottom:15px">🍦 Food & Shops in Dominica</h2>
+
+      <h3>Ice Cream & Treats</h3>
+      <ul>
+        <li><strong>Le Petit Paris</strong> - Roseau Bayfront<br>Best gelato. $3 EC per scoop. Takes USD.</li>
+        <li><strong>Diggins Ice Cream</strong> - Roseau by the bay<br>Local soursop + guava flavors. $5 EC</li>
+        <li><strong>Fresh Market</strong> - Portsmouth<br>Coconut drops + sugar cake. $2 EC</li>
+      </ul>
+
+      <h3>Supermarkets & Snacks</h3>
+      <ul>
+        <li><strong>Whitchurch IGA</strong> - Roseau<br>Big AC supermarket. Takes USD. 5 min from cruise port.</li>
+        <li><strong>Astaphans</strong> - Canefield<br>Best for local snacks + drinks. 10 min taxi.</li>
+        <li><strong>Jays Supermarket</strong> - Portsmouth<br>Closest to Cabrits dock. Cold drinks.</li>
+      </ul>
+
+      <h3>Real Local Food Spots</h3>
+      <ul>
+        <li><strong>Pearl’s Cuisine</strong> - Roseau<br>$15 EC lunch plate. Callaloo + fish. Locals eat here.</li>
+        <li><strong>Keepin’ It Real</strong> - Mero Beach<br>Beach BBQ. $20 EC. Swimming after lunch.</li>
+        <li><strong>Ruins Rock Cafe</strong> - Portsmouth<br>Pizza + sea view. $25 EC. Takes cards.</li>
+      </ul>
+
+      <h3>Popular Tourist Spots</h3>
+      <ul>
+        <li><strong>Champagne Reef</strong> - Soufriere<br>Snorkel in bubbles. $5 EC entry. 30 min from Roseau.</li>
+        <li><strong>Emerald Pool</strong> - Castle Bruce area<br>Easy waterfall. $5 EC. 40 min taxi.</li>
+        <li><strong>Kalinago Territory</strong> - East coast<br>Real Carib culture. $10 EC tour. 1 hour drive.</li>
+      </ul>
+    </div>
   </div>
 
   <div id="map" class="tab" style="display:none">
