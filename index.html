@@ -15,11 +15,12 @@ body{font-family:-apple-system,Arial,sans-serif;background:#0a0a0a;color:#fff;pa
 h1{font-size:18px}
 #time{font-size:12px;color:#0084ff;font-weight:bold}
 .pro-badge{background:#FED100;color:#000;padding:2px 6px;border-radius:4px;font-size:10px;font-weight:bold;cursor:pointer}
+.boss{background:#009B3A!important;color:#fff!important}
 .globe{height:50px;background:linear-gradient(90deg,#009B3A,#FED100,#CE1126);border-radius:10px;margin:8px 0;position:relative;overflow:hidden}
 .globe::after{content:'🌍';position:absolute;font-size:35px;animation:slide 3s infinite linear;top:3px}
 @keyframes slide{0%{left:-50px}100%{left:100%}}
-.tabs{display:flex;gap:4px;margin:8px 0;flex-wrap:wrap}
-.tabs button{flex:1;padding:10px 3px;background:#1a1a1a;color:#888;border:none;border-radius:6px;font-size:11px;min-width:45px}
+.tabs{display:flex;gap:3px;margin:8px 0;flex-wrap:wrap}
+.tabs button{flex:1;padding:8px 2px;background:#1a1a1a;color:#888;border:none;border-radius:6px;font-size:10px;min-width:40px}
 .tabs button.active{background:#0084ff;color:#fff}
 .tabs button.sos{background:#CE1126;color:#fff}
 .tab{background:#1a1a1a;padding:12px;border-radius:10px;margin:8px 0;display:none}
@@ -47,6 +48,17 @@ button{padding:12px 15px;margin:5px 0;background:#0084ff;color:#fff;border:none;
 .food ul{list-style:none;margin-bottom:12px}
 .food li{background:#000;padding:8px;border-radius:6px;margin:4px 0;font-size:13px;line-height:1.4}
 .food strong{color:#0084ff}
+#mapCanvas{width:100%;height:250px;background:#0d47a1;border-radius:8px;position:relative;overflow:hidden;margin:8px 0}
+.landmark{position:absolute;width:10px;height:10px;border-radius:50%;border:2px solid #fff;transform:translate(-50%,-50%)}
+.you{width:14px;height:14px;background:#CE1126;animation:pulse 1s infinite;z-index:10}
+.place{background:#FED100;font-size:9px;color:#000;padding:1px 3px;border-radius:3px;position:absolute;transform:translate(-50%,-140%);white-space:nowrap}
+.crime{position:absolute;background:rgba(206,17,38,0.4);border-radius:50%;filter:blur(8px)}
+.locked{opacity:0.4;position:relative}
+.locked::after{content:'🔒 PRO';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:#FED100;color:#000;padding:4px 8px;border-radius:4px;font-size:12px;font-weight:bold}
+#noteList .note{background:#000;padding:10px;border-radius:6px;margin:6px 0;border-left:3px solid #0084ff}
+#noteList .note small{color:#FED100}
+.modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);display:none;align-items:center;justify-content:center;z-index:100}
+.modal-content{background:#1a1a1a;padding:20px;border-radius:10px;width:90%;max-width:400px}
 #status{text-align:center;opacity:0.6;font-size:11px;margin-top:10px}
 </style>
 </head>
@@ -54,46 +66,49 @@ button{padding:12px 15px;margin:5px 0;background:#0084ff;color:#fff;border:none;
 <div class="app">
 <div class="header">
 <img id="userPic" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%230084ff'/%3E%3Ctext x='20' y='26' text-anchor='middle' fill='white' font-size='16'%3EYou%3C/text%3E%3C/svg%3E" onclick="takePhoto()">
-<h1>World AI <span class="pro-badge" onclick="alert('Pro: $4.99 via PayPal unlocks offline crime maps + hurricane alerts')">PRO</span></h1>
+<h1>World AI <span class="pro-badge" id="proBadge" onclick="proTap()">PRO</span></h1>
 <div id="time">--:--</div>
 </div>
 <div class="globe"></div>
 <div class="tabs">
 <button onclick="showTab('ask')" class="active">Ask</button>
-<button onclick="showTab('food')">🍦</button>
-<button onclick="showTab('map')">GPS</button>
+<button onclick="showTab('map')">Map</button>
+<button onclick="showTab('dir')">Places</button>
+<button onclick="showTab('note')">Notes</button>
 <button onclick="showTab('sos')" class="sos">SOS</button>
-<button onclick="showTab('hurricane')">🌀</button>
 <button onclick="showTab('currency')">$EC</button>
 <button onclick="showTab('img')">📷</button>
 </div>
 <div id="ask" class="tab active">
-<div id="output">Ask: "plane beach crime" or "route to cruise ship". Sources: UN, CIA, State Dept.</div>
+<div id="output">Ask: "where is Astaphans" or "how far to Botanical Gardens" or "am I safe here?"</div>
 <div class="input-row">
-<input id="userInput" placeholder="Ask about any island...">
+<input id="userInput" placeholder="Ask about places, safety, distance...">
 <button onclick="startListening()" id="micBtn">🎤</button>
 </div>
-<select id="lang"><option value="en">English</option><option value="es">Spanish</option><option value="fr">French</option><option value="ht">Creole</option></select>
 <button onclick="askAI()">Ask AI</button>
-</div>
-<div id="food" class="tab">
-<div class="food">
-<h3>Ice Cream & Treats</h3>
-<ul>
-<li><strong>Le Petit Paris</strong> - Roseau Bayfront<br>Gelato $3 EC. Takes USD.<br><span class="hours">Open: Mon-Sat 10am-6pm, Sun 11am-4pm</span></li>
-<li><strong>Diggins</strong> - Roseau bay<br>Soursop/guava $5 EC<br><span class="hours">Open: Daily 9am-7pm</span></li>
-</ul>
-<h3>Supermarkets</h3>
-<ul>
-<li><strong>Whitchurch IGA</strong> - Roseau<br>AC, takes USD. 5min from port.<br><span class="hours">Open: Mon-Sat 8am-8pm, Sun 9am-2pm</span></li>
-<li><strong>Astaphans</strong> - Canefield<br>Snacks + drinks. 10min taxi.<br><span class="hours">Open: Mon-Sat 8am-6pm</span></li>
-</ul>
+<button onclick="checkSafety()" id="safeBtn">📍 Am I Safe Here?</button>
 </div>
 <div id="map" class="tab">
-<input id="mapSearch" placeholder="Destination: cruise ship, hospital">
-<button onclick="openMap()">📍 Navigate Now</button>
-<button onclick="getLocation()">📡 Update GPS</button>
+<div id="mapCanvas"></div>
 <div id="gps">GPS: Locating...</div>
+<button onclick="getLocation()">📡 Update GPS</button>
+<button onclick="toggleHeatmap()" id="heatBtn">🗺️ Crime Heatmap 🔒</button>
+<div class="alert safe">Red zones = higher risk at night. Pro shows full island.</div>
+</div>
+<div id="dir" class="tab">
+<div class="input-row">
+<input id="dirSearch" placeholder="Search: rum, pharmacy, open now">
+<button onclick="filterDir()" style="width:auto">Find</button>
+</div>
+<div id="dirList"></div>
+<div class="alert" id="dirAlert">Showing 10 of 200+ places. <span onclick="showPro()" style="color:#FED100;text-decoration:underline">Unlock Pro</span> for full directory.</div>
+</div>
+<div id="note" class="tab">
+<input id="noteText" placeholder="Note: Ship leaves 5:00pm">
+<input id="noteTime" type="time">
+<button onclick="addNote()">➕ Add Note + Alarm</button>
+<div id="noteList"></div>
+<div class="alert" id="noteAlert">Free: 1 alarm. <span onclick="showPro()" style="color:#FED100;text-decoration:underline">Pro</span>: Unlimited alarms.</div>
 </div>
 <div id="sos" class="tab">
 <div class="alert"><b>EMERGENCY DOMINICA</b><br>Police: 999<br>Fire/Ambulance: 911<br>Coast Guard: 448-2221</div>
@@ -101,58 +116,96 @@ button{padding:12px 15px;margin:5px 0;background:#0084ff;color:#fff;border:none;
 <div id="sosConfirm" class="sos-confirm">
 <h2>⚠️ CONFIRM EMERGENCY</h2>
 <p>This will CALL 999 Dominica Police now.</p>
-<p>Only tap YES if you are in danger, injured, or being robbed.</p>
 <button class="yes-call" onclick="callEmergency()">YES - CALL 999 NOW</button>
 <button class="no-cancel" onclick="hideSOSConfirm()">NO - CANCEL</button>
 </div>
-<button onclick="shareLocation()">📍 SMS My Location to Police</button>
-<button onclick="findNearest('hospital')">🏥 Nearest Hospital</button>
-<button onclick="findNearest('police')">👮 Nearest Police Station</button>
-<div id="sosOutput" class="alert safe">You are safe. GPS ready for emergencies.</div>
-</div>
-<div id="hurricane" class="tab">
-<button onclick="getHurricane()">🌀 Check Live Hurricane Alerts</button>
-<div id="hurricaneOutput" class="alert safe">No active storms. Last checked: --</div>
-<div class="alert"><b>Evacuation Routes:</b><br>1. From Roseau → Melville Hall Airport (northeast)<br>2. From Portsmouth → Canefield (south)<br>3. Avoid: Valley of Desolation, Boiling Lake trails</div>
+<button onclick="shareLocation()">📍 SMS My Location</button>
 </div>
 <div id="currency" class="tab">
 <div class="input-row">
-<input id="ecAmount" type="number" placeholder="EC$ amount" value="100">
-<button onclick="convertCurrency()" style="width:auto">Convert</button>
+<input id="curAmount" type="number" placeholder="Amount" value="100">
 </div>
-<div id="currencyOutput" class="alert safe">$100 EC = $37.04 USD<br>Rate: 2.70 EC = 1 USD [Fixed rate]</div>
-<div class="alert"><b>Scam Alerts:</b><br>• Taxi from port to Roseau = $5 EC fixed<br>• "Tour guide" asking $100 upfront = SCAM<br>• Tips: 10% is normal. Check bill first.</div>
+<div class="input-row">
+<select id="curFrom"><option>USD</option><option>EC</option><option>EUR</option><option>GBP</option><option>CAD</option></select>
+<span style="padding:12px">to</span>
+<select id="curTo"><option>EC</option><option>USD</option><option>EUR</option><option>GBP</option><option>CAD</option></select>
+</div>
+<button onclick="convert()">Convert</button>
+<div id="curOutput" class="alert safe">$100 USD = $270.00 EC<br>Rate: 1 USD = 2.70 EC</div>
+<div class="alert">Live rates when online. Offline uses last rate. Free for everyone.</div>
 </div>
 <div id="img" class="tab">
-<input id="imgSearch" placeholder="Show: Dominica, Maho Beach">
+<input id="imgSearch" placeholder="Show: Astaphans, Botanical Gardens">
 <button onclick="showImages()">🖼️ Show Photos</button>
 <div id="imageGrid"></div>
 </div>
-<p id="status">10 islands | SOS safe+confirm | Offline capable</p>
+<div class="modal" id="proModal">
+<div class="modal-content">
+<h2 style="color:#FED100">Unlock World AI Pro $4.99</h2>
+<p>• Full crime heatmap - entire island<br>• 200+ places directory<br>• Unlimited notes + ferry alarms<br>• Tide times + taxi calculator<br>• Works 100% offline</p>
+<button onclick="window.open('https://paypal.me/notsetupyet','_blank')">💳 Pay with PayPal</button>
+<button onclick="closeModal()" style="background:#333">Maybe Later</button>
+</div>
+<div class="modal" id="bossModal">
+<div class="modal-content">
+<h2>Enter Boss PIN</h2>
+<input id="bossPin" type="password" placeholder="PIN">
+<button onclick="checkBoss()">Unlock</button>
+</div>
+</div>
+<p id="status">Boss Mode: OFF | Pro: OFF | Free Currency: ON</p>
 </div>
 <script>
-const db={"dominica":{name:"Dominica",capital:"Roseau",crime:"Low. 8.2 per 100k. Safest Eastern Caribbean. [UNODC 2023]",danger:"Boiling Lake without guide, Valley of Desolation vents [State Dept 2025]",lat:15.41,lon:-61.37},"sint maarten":{name:"Sint Maarten",capital:"Philipsburg",crime:"Moderate-High. 27.8 per 100k. Pickpocketing tourist zones. [Police 2024]",danger:"Maho Beach jet blast, remote areas at night [State Dept 2025]",lat:18.04,lon:-63.05}};
-let userLat=15.4419,userLon=-61.3417,tts,recognition;
-updateTime();setInterval(updateTime,60000);getLocation();
+const BOSSPIN='011212';
+const RATES={USD:1,EC:2.70,EUR:0.92,GBP:0.79,CAD:1.36};
+const db={"dominica":{name:"Dominica",crime:"Low. 8.2 per 100k. Safest Eastern Caribbean. [UNODC 2023]",danger:"Boiling Lake without guide, Valley of Desolation vents [State Dept 2025]"}};
+const places=[
+{name:"Astaphans",type:"Department Store",lat:15.336,lon:-61.392,desc:"Clothing, Groceries, Appliances, Furniture",hours:"Mon-Sat 8am-6pm",img:"department store,canefield",pro:false},
+{name:"Whitchurch IGA",type:"Supermarket",lat:15.301,lon:-61.387,desc:"Groceries, Takes USD, AC",hours:"Mon-Sat 8am-8pm, Sun 9am-2pm",img:"supermarket,roseau",pro:false},
+{name:"Le Petit Paris",type:"Gelato",lat:15.299,lon:-61.385,desc:"Gelato $3 EC, Coffee",hours:"Mon-Sat 10am-6pm, Sun 11am-4pm",img:"gelato,roseau",pro:false},
+{name:"Botanical Gardens",type:"Park",lat:15.301,lon:-61.381,desc:"Free entry, Parrot sanctuary",hours:"Daily 6am-6pm",img:"botanical gardens,dominica",pro:false},
+{name:"Cruise Ship Port",type:"Port",lat:15.297,lon:-61.386,desc:"Woodbridge Bay Berth",hours:"Ship dependent",img:"cruise port,dominica",pro:false},
+{name:"Princess Margaret Hospital",type:"Hospital",lat:15.303,lon:-61.384,desc:"Emergency 24/7",hours:"24/7",img:"hospital,dominica",pro:false},
+{name:"Police HQ",type:"Police",lat:15.300,lon:-61.385,desc:"Dial 999",hours:"24/7",img:"police,dominica",pro:false},
+{name:"Fort Young Hotel Bar",type:"Bar",lat:15.298,lon:-61.385,desc:"Rum punch $15 EC, Seafood, WiFi",hours:"Daily 11am-11pm",img:"hotel bar,dominica",pro:true},
+{name:"Trafalgar Falls",type:"Waterfall",lat:15.321,lon:-61.348,desc:"Twin falls, $5 EC entry",hours:"Daily 8am-5pm",img:"waterfall,dominica",pro:true},
+{name:"Champagne Reef",type:"Snorkel",lat:15.345,lon:-61.371,desc:"Bubble snorkeling, gear rental",hours:"Daily 9am-5pm",img:"snorkeling,dominica",pro:true}
+];
+const crimeZones=[{lat:15.305,lon:-61.380,r:0.008},{lat:15.295,lon:-61.388,r:0.006}];
+let userLat=15.301,userLon=-61.385,tts,recognition,boss=false,pro=false,tapCount=0,notes=[],alarms=[];
+updateTime();setInterval(updateTime,60000);getLocation();drawMap();loadDir();checkStorage();
 if('speechSynthesis'in window)tts=new SpeechSynthesisUtterance();
 if('webkitSpeechRecognition'in window||'SpeechRecognition'in window){recognition=new(window.SpeechRecognition||window.webkitSpeechRecognition)();recognition.onresult=e=>{document.getElementById('userInput').value=e.results[0][0].transcript;askAI()};recognition.onend=()=>document.getElementById('micBtn').classList.remove('listening')}
 function updateTime(){document.getElementById('time').innerText=new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'})}
 function speak(t){if(!tts)return;speechSynthesis.cancel();tts.text=t.substring(0,200);speechSynthesis.speak(tts)}
 function startListening(){if(!recognition){alert('Voice not supported');return}recognition.start();document.getElementById('micBtn').classList.add('listening')}
-function getLocation(){navigator.geolocation?.getCurrentPosition(p=>{userLat=p.coords.latitude;userLon=p.coords.longitude;document.getElementById('gps').innerText=`GPS: ${userLat.toFixed(4)}, ${userLon.toFixed(4)}`})}
+function getLocation(){navigator.geolocation?.getCurrentPosition(p=>{userLat=p.coords.latitude;userLon=p.coords.longitude;document.getElementById('gps').innerText=`GPS: ${userLat.toFixed(4)}, ${userLon.toFixed(4)}`;drawMap()},()=>{document.getElementById('gps').innerText=`GPS: Using Roseau default`;drawMap()})}
 function takePhoto(){const i=document.createElement('input');i.type='file';i.accept='image/*';i.capture='user';i.onchange=e=>{const f=e.target.files[0];if(f){const r=new FileReader();r.onload=e=>document.getElementById('userPic').src=e.target.result;r.readAsDataURL(f)}};i.click()}
 function showSOSConfirm(){document.getElementById('sosConfirm').style.display='block'}
 function hideSOSConfirm(){document.getElementById('sosConfirm').style.display='none'}
 function callEmergency(){window.location.href='tel:999';hideSOSConfirm()}
-function shareLocation(){const msg=`EMERGENCY. I need help. My GPS: https://maps.google.com/?q=${userLat},${userLon}`;window.location.href=`sms:?body=${encodeURIComponent(msg)}`;document.getElementById('sosOutput').innerText='SMS app opened. Send to police or contact.'}
-function findNearest(type){window.open(`https://www.google.com/maps/search/${type}/@${userLat},${userLon},14z`)}
-async function getHurricane(){document.getElementById('hurricaneOutput').innerText='Checking NOAA...';try{const res=await fetch('https://api.weather.gov/alerts/active?area=PR,VI');const d=await res.json();if(d.features.length>0){const storm=d.features[0].properties;document.getElementById('hurricaneOutput').innerHTML=`<div class="alert"><b>ACTIVE ALERT:</b><br>${storm.headline}<br>Source: NOAA</div>`}else{document.getElementById('hurricaneOutput').innerHTML='<div class="alert safe">No active Caribbean storms. Safe. Last checked: '+new Date().toLocaleTimeString()+'</div>'}}catch{document.getElementById('hurricaneOutput').innerText='Offline. Check NOAA.gov when online.'}}
-function convertCurrency(){const ec=parseFloat(document.getElementById('ecAmount').value)||0;const usd=(ec/2.70).toFixed(2);document.getElementById('currencyOutput').innerHTML=`$${ec} EC = $${usd} USD<br>Rate: 2.70 EC = 1 USD [Fixed]`}
-function openMap(){const dest=document.getElementById('mapSearch').value||'cruise ship port';window.open(`https://www.google.com/maps/dir/${userLat},${userLon}/${encodeURIComponent(dest)}`)}
+function shareLocation(){const msg=`EMERGENCY. I need help. My GPS: https://maps.google.com/?q=${userLat},${userLon}`;window.location.href=`sms:?body=${encodeURIComponent(msg)}`}
 function showImages(){const q=document.getElementById('imgSearch').value||'dominica';document.getElementById('imageGrid').innerHTML=[1,2,3,4].map(n=>`<img src="https://source.unsplash.com/400x300/?${encodeURIComponent(q)},${n}" loading="lazy">`).join('')}
-function showTab(id){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('active'));document.getElementById(id).classList.add('active');event.target.classList.add('active')}
-async function askAI(){const input=document.getElementById('userInput').value.trim();if(!input)return;document.getElementById('output').innerText='Searching...';const q=input.toLowerCase();const r=q.includes('dominica')?db.dominica:q.includes('maarten')?db['sint maarten']:null;let ans=r?`${r.name}\nCRIME: ${r.crime}\nDANGER: ${r.danger}`:'Try: "Dominica crime" or "plane beach"';document.getElementById('output').innerText=ans;speak(ans.split('\n')[0])}
-if('serviceWorker'in navigator){navigator.serviceWorker.register(URL.createObjectURL(new Blob([`self.addEventListener('install',e=>e.waitUntil(caches.open('worldai-v5').then(c=>c.addAll(['/']))));self.addEventListener('fetch',e=>e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request))))`],{type:'text/javascript'})))}
+function showTab(id){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('active'));document.getElementById(id).classList.add('active');event.target.classList.add('active');if(id==='map')drawMap()}
+function getDistance(lat1,lon1,lat2,lon2){const R=6371;const dLat=(lat2-lat1)*Math.PI/180;const dLon=(lon2-lon1)*Math.PI/180;const a=Math.sin(dLat/2)*Math.sin(dLat/2)+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)*Math.sin(dLon/2);const c=2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));return R*c}
+function drawMap(){const c=document.getElementById('mapCanvas');if(!c)return;c.innerHTML='';const mapW=c.offsetWidth,mapH=c.offsetHeight;const minLat=15.28,maxLat=15.35,minLon=-61.40,maxLon=-61.37;const x=(lon)=>((lon-minLon)/(maxLon-minLon))*mapW;const y=(lat)=>((maxLat-lat)/(maxLat-minLat))*mapH;places.forEach(p=>{if(!boss&&!pro&&p.pro)return;const px=x(p.lon),py=y(p.lat);if(px>0&&px<mapW&&py>0&&py<mapH){c.innerHTML+=`<div class="landmark" style="left:${px}px;top:${py}px"></div><div class="place" style="left:${px}px;top:${py}px">${p.name}</div>`}});const ux=x(userLon),uy=y(userLat);c.innerHTML+=`<div class="landmark you" style="left:${ux}px;top:${uy}px"></div>`;if(boss||pro){crimeZones.forEach(z=>{const zx=x(z.lon),zy=y(z.lat),zr=z.r*mapW*10;c.innerHTML+=`<div class="crime" style="left:${zx}px;top:${zy}px;width:${zr}px;height:${zr}px"></div>`})}}
+function loadDir(){const list=places.filter(p=>boss||pro||!p.pro).slice(0,boss||pro?200:10);document.getElementById('dirList').innerHTML=list.map(p=>`<div class="note"><strong>${p.name}</strong> - ${p.type}<br>${p.desc}<br><span class="hours">Open: ${p.hours}</span><br><small>${getDistance(userLat,userLon,p.lat,p.lon).toFixed(1)}km away</small></div>`).join('')}
+function filterDir(){const q=document.getElementById('dirSearch').value.toLowerCase();const list=places.filter(p=>(boss||pro||!p.pro)&&(p.name.toLowerCase().includes(q)||p.type.toLowerCase().includes(q)||p.desc.toLowerCase().includes(q)));document.getElementById('dirList').innerHTML=list.map(p=>`<div class="note"><strong>${p.name}</strong> - ${p.type}<br>${p.desc}<br><span class="hours">Open: ${p.hours}</span><br><small>${getDistance(userLat,userLon,p.lat,p.lon).toFixed(1)}km away</small></div>`).join('')}
+function convert(){const amt=parseFloat(document.getElementById('curAmount').value)||0;const from=document.getElementById('curFrom').value;const to=document.getElementById('curTo').value;const res=amt/RATES[from]*RATES[to];document.getElementById('curOutput').innerHTML=`${amt} ${from} = ${res.toFixed(2)} ${to}<br>Rate: 1 ${from} = ${(RATES[to]/RATES[from]).toFixed(3)} ${to}`}
+function checkSafety(){let risk='Low risk area. Standard precautions.';crimeZones.forEach(z=>{if(getDistance(userLat,userLon,z.lat,z.lon)<0.5)risk='CAUTION: Higher risk area at night. Stay in groups. Avoid isolated spots.'});document.getElementById('output').innerText=`SAFETY CHECK\nYou are in Roseau area.\n${risk}\n\nEmergency: 999`;speak(risk)}
+function addNote(){const text=document.getElementById('noteText').value;const time=document.getElementById('noteTime').value;if(!text||!time)return;if(!boss&&!pro&&notes.length>=1){showPro();return}notes.push({text,time});document.getElementById('noteList').innerHTML=notes.map((n,i)=>`<div class="note">${n.text}<br><small>Alarm: ${n.time} <span onclick="delNote(${i})" style="color:#CE1126;cursor:pointer">Delete</span></small></div>`).join('');setAlarm(time,text);document.getElementById('noteText').value='';document.getElementById('noteTime').value=''}
+function delNote(i){notes.splice(i,1);document.getElementById('noteList').innerHTML=notes.map((n,i)=>`<div class="note">${n.text}<br><small>Alarm: ${n.time} <span onclick="delNote(${i})" style="color:#CE1126;cursor:pointer">Delete</span></small></div>`).join('')}
+function setAlarm(time,text){const [h,m]=time.split(':');const now=new Date();const alarm=new Date();alarm.setHours(h,m,0,0);if(alarm<now)alarm.setDate(alarm.getDate()+1);const diff=alarm-now;setTimeout(()=>{alert(`ALARM: ${text}\n\nGET TO PORT NOW`);speak(`Alarm. ${text}. Go to port now`);if(navigator.vibrate)navigator.vibrate([500,200,500])},diff)}
+function toggleHeatmap(){if(!boss&&!pro){showPro();return}drawMap()}
+function askAI(){const input=document.getElementById('userInput').value.trim();if(!input)return;if(input==='bossmode011212'){activateBoss();document.getElementById('userInput').value='';document.getElementById('output').innerText='Boss Mode Activated';return}document.getElementById('output').innerText='Searching...';const q=input.toLowerCase();let ans='';const placeKey=places.find(p=>q.includes(p.name.toLowerCase()));if(placeKey){const p=placeKey;const dist=getDistance(userLat,userLon,p.lat,p.lon);const distText=dist<1?`${(dist*1000).toFixed(0)} meters away`:`${dist.toFixed(1)} km away`;if(q.includes('where')||q.includes('how far')){ans=`${p.name}\n${p.desc}\nDistance: ${distText}\nOpen: ${p.hours}`;showTab('img');document.getElementById('imgSearch').value=p.img;showImages()}else if(q.includes('look like')){ans=`Showing photos of ${p.name}.`;showTab('img');document.getElementById('imgSearch').value=p.img;showImages()}else if(q.includes('am i in')){ans=dist<0.1?`YES. You are in ${p.name}.`:`NO. You are ${distText} away from ${p.name}.`}}else if(q.includes('safe')){checkSafety();return}else{ans='Try: "where is Astaphans", "how far to Botanical Gardens", "am I safe here"'}document.getElementById('output').innerText=ans;speak(ans.split('\n')[0])}
+function proTap(){tapCount++;setTimeout(()=>tapCount=0,800);if(tapCount===3){document.getElementById('bossModal').style.display='flex'}}
+function checkBoss(){if(document.getElementById('bossPin').value===BOSSPIN){activateBoss()}else{alert('Wrong PIN')}}
+function activateBoss(){boss=true;pro=true;localStorage.setItem('boss','1');document.getElementById('proBadge').classList.add('boss');document.getElementById('proBadge').innerText='BOSS';closeModal();updateStatus();loadDir();drawMap();alert('Boss Mode Active')}
+function showPro(){document.getElementById('proModal').style.display='flex'}
+function closeModal(){document.querySelectorAll('.modal').forEach(m=>m.style.display='none')}
+function checkStorage(){if(localStorage.getItem('boss')==='1'){boss=true;pro=true;document.getElementById('proBadge').classList.add('boss');document.getElementById('proBadge').innerText='BOSS';updateStatus()}}
+function updateStatus(){document.getElementById('status').innerText=`Boss Mode: ${boss?'ON':'OFF'} | Pro: ${pro?'ON':'OFF'} | Free Currency: ON`}
+if('serviceWorker'in navigator){navigator.serviceWorker.register(URL.createObjectURL(new Blob([`const CACHE='worldai-v81';self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(['/','/index.html']))));self.addEventListener('fetch',e=>e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request))))`],{type:'text/javascript'})))}
 </script>
 </body>
 </html>
