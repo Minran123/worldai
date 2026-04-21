@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
 <meta name="theme-color" content="#0084ff">
 <title>World AI Pro</title>
 <link rel="manifest" href="data:application/json,{'name':'World AI','short_name':'WorldAI','start_url':'.','display':'standalone','background_color':'#0a0a0a','theme_color':'#0084ff'}">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,Arial,sans-serif;background:#0a0a0a;color:#fff;min-height:100vh;padding:10px}
+body{font-family:-apple-system,Arial,sans-serif;background:#0a0a0a;color:#fff;padding:10px}
 .app{max-width:500px;margin:auto}
 .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
 #userPic{width:40px;height:40px;border-radius:50%;border:2px solid #0084ff;object-fit:cover}
@@ -21,7 +21,7 @@ h1{font-size:20px}
 .tabs button{flex:1;padding:12px 5px;background:#1a1a1a;color:#888;border:none;border-radius:8px;font-size:13px;min-width:60px}
 .tabs button.active{background:#0084ff;color:#fff}
 .tab{background:#1a1a1a;padding:15px;border-radius:10px;margin:10px 0}
-#output{background:#000;padding:15px;border-radius:8px;margin:10px 0;min-height:150px;text-align:left;font-size:15px;white-space:pre-line;line-height:1.5}
+#output{background:#000;padding:15px;border-radius:8px;margin:10px 0;min-height:150px;font-size:15px;white-space:pre-line;line-height:1.5}
 .input-row{display:flex;gap:8px}
 input,select{flex:1;padding:14px;background:#000;color:#fff;border:1px solid #333;border-radius:8px;font-size:16px}
 button{padding:14px 18px;margin:6px 0;background:#0084ff;color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:bold;width:100%}
@@ -34,203 +34,110 @@ button{padding:14px 18px;margin:6px 0;background:#0084ff;color:#fff;border:none;
 #status{text-align:center;opacity:0.6;font-size:12px;margin-top:15px}
 .pro-badge{background:#FED100;color:#000;padding:2px 6px;border-radius:4px;font-size:10px;font-weight:bold}
 .source{color:#0084ff;font-size:11px;opacity:0.8}
-.food-section h3{color:#FED100;margin:15px 0 8px 0;font-size:16px}
-.food-section ul{list-style:none;margin-bottom:15px}
-.food-section li{background:#000;padding:10px;border-radius:6px;margin:5px 0;font-size:14px;line-height:1.4}
-.food-section strong{color:#0084ff}
+.food h3{color:#FED100;margin:15px 0 8px 0;font-size:16px}
+.food ul{list-style:none;margin-bottom:15px}
+.food li{background:#000;padding:10px;border-radius:6px;margin:5px 0;font-size:14px;line-height:1.4}
+.food strong{color:#0084ff}
+.hours{color:#FED100;font-size:12px}
 </style>
 </head>
 <body>
 <div class="app">
-  <div class="header">
-    <img id="userPic" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%230084ff'/%3E%3Ctext x='20' y='26' text-anchor='middle' fill='white' font-size='16'%3EYou%3C/text%3E%3C/svg%3E" onclick="takePhoto()">
-    <h1>World AI <span class="pro-badge">PRO</span></h1>
-    <div id="time">--:--</div>
-  </div>
-  <div class="globe"></div>
-
-  <div class="tabs">
-    <button onclick="showTab('ask')" class="active">Ask AI</button>
-    <button onclick="showTab('food')">🍦 Food</button>
-    <button onclick="showTab('map')">GPS</button>
-    <button onclick="showTab('img')">Images</button>
-    <button onclick="showTab('pro')">Pro</button>
-  </div>
-
-  <div id="ask" class="tab">
-    <div id="output">For tourists, police, locals. Ask: "plane beach crime level" or "safest route to cruise ship from Roseau". Sources: UN, CIA, State Dept only.</div>
-    <div class="input-row">
-      <input id="userInput" placeholder="Ask about any country or island...">
-      <button onclick="startListening()" id="micBtn">🎤</button>
-    </div>
-    <select id="lang">
-      <option value="en">English</option>
-      <option value="es">Spanish</option>
-      <option value="fr">French</option>
-      <option value="ht">Haitian Creole</option>
-    </select>
-    <button onclick="askAI()">Ask AI</button>
-  </div>
-
-  <div id="food" class="tab" style="display:none">
-    <div class="food-section">
-      <h2 style="margin-bottom:15px">🍦 Food & Shops in Dominica</h2>
-
-      <h3>Ice Cream & Treats</h3>
-      <ul>
-        <li><strong>Le Petit Paris</strong> - Roseau Bayfront<br>Best gelato. $3 EC per scoop. Takes USD.</li>
-        <li><strong>Diggins Ice Cream</strong> - Roseau by the bay<br>Local soursop + guava flavors. $5 EC</li>
-        <li><strong>Fresh Market</strong> - Portsmouth<br>Coconut drops + sugar cake. $2 EC</li>
-      </ul>
-
-      <h3>Supermarkets & Snacks</h3>
-      <ul>
-        <li><strong>Whitchurch IGA</strong> - Roseau<br>Big AC supermarket. Takes USD. 5 min from cruise port.</li>
-        <li><strong>Astaphans</strong> - Canefield<br>Best for local snacks + drinks. 10 min taxi.</li>
-        <li><strong>Jays Supermarket</strong> - Portsmouth<br>Closest to Cabrits dock. Cold drinks.</li>
-      </ul>
-
-      <h3>Real Local Food Spots</h3>
-      <ul>
-        <li><strong>Pearl’s Cuisine</strong> - Roseau<br>$15 EC lunch plate. Callaloo + fish. Locals eat here.</li>
-        <li><strong>Keepin’ It Real</strong> - Mero Beach<br>Beach BBQ. $20 EC. Swimming after lunch.</li>
-        <li><strong>Ruins Rock Cafe</strong> - Portsmouth<br>Pizza + sea view. $25 EC. Takes cards.</li>
-      </ul>
-
-      <h3>Popular Tourist Spots</h3>
-      <ul>
-        <li><strong>Champagne Reef</strong> - Soufriere<br>Snorkel in bubbles. $5 EC entry. 30 min from Roseau.</li>
-        <li><strong>Emerald Pool</strong> - Castle Bruce area<br>Easy waterfall. $5 EC. 40 min taxi.</li>
-        <li><strong>Kalinago Territory</strong> - East coast<br>Real Carib culture. $10 EC tour. 1 hour drive.</li>
-      </ul>
-    </div>
-  </div>
-
-  <div id="map" class="tab" style="display:none">
-    <input id="mapSearch" placeholder="Destination: cruise ship, police station, hotel">
-    <button onclick="openMap()">📍 Navigate Now</button>
-    <button onclick="getLocation()">📡 Update My GPS</button>
-    <div id="gps">GPS: Locating...</div>
-    <button onclick="getWeather()">⛅ Live Weather + Hurricane Alerts</button>
-  </div>
-
-  <div id="img" class="tab" style="display:none">
-    <input id="imgSearch" placeholder="Show images of: Dominica, Maho Beach">
-    <button onclick="showImages()">🖼️ Show Real Photos</button>
-    <div id="imageGrid"></div>
-  </div>
-
-  <div id="pro" class="tab" style="display:none">
-    <div style="background:#000;padding:15px;border-radius:8px">
-      <b>World AI Pro - $4.99</b><br><br>
-      ✓ Offline crime heatmaps for police <span class="source">[UNODC 2025]</span><br>
-      ✓ Voice turn-by-turn directions<br>
-      ✓ Hurricane/riot alerts <span class="source">[NOAA]</span><br>
-      ✓ Ad-free + priority sources<br>
-      ✓ Save unlimited locations<br><br>
-      <button onclick="window.open('https://paypal.me/YOUR_LINK/4.99')">Unlock Pro via PayPal</button><br>
-      <small>Free: 5 searches/day. Pro: Unlimited. You keep 100% - no app store fees.</small>
-    </div>
-  </div>
-
-  <p id="status">50 major islands loaded | Sources: UN, CIA, State Dept | Offline Ready</p>
+<div class="header">
+<img id="userPic" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%230084ff'/%3E%3Ctext x='20' y='26' text-anchor='middle' fill='white' font-size='16'%3EYou%3C/text%3E%3C/svg%3E" onclick="takePhoto()">
+<h1>World AI <span class="pro-badge">PRO</span></h1>
+<div id="time">--:--</div>
 </div>
-
+<div class="globe"></div>
+<div class="tabs">
+<button onclick="showTab('ask')" class="active">Ask AI</button>
+<button onclick="showTab('food')">🍦 Food</button>
+<button onclick="showTab('map')">GPS</button>
+<button onclick="showTab('img')">Images</button>
+<button onclick="showTab('pro')">Pro</button>
+</div>
+<div id="ask" class="tab">
+<div id="output">For tourists, police, locals. Ask: "plane beach crime level" or "safest route to cruise ship from Roseau". Sources: UN, CIA, State Dept only.</div>
+<div class="input-row">
+<input id="userInput" placeholder="Ask about any country or island...">
+<button onclick="startListening()" id="micBtn">🎤</button>
+</div>
+<select id="lang"><option value="en">English</option><option value="es">Spanish</option><option value="fr">French</option><option value="ht">Haitian Creole</option></select>
+<button onclick="askAI()">Ask AI</button>
+</div>
+<div id="food" class="tab" style="display:none">
+<div class="food">
+<h2 style="margin-bottom:15px">🍦 Food & Shops in Dominica</h2>
+<h3>Ice Cream & Treats</h3>
+<ul>
+<li><strong>Le Petit Paris</strong> - Roseau Bayfront<br>Best gelato. $3 EC per scoop. Takes USD.<br><span class="hours">Open: Mon-Sat 10am-6pm, Sun 11am-4pm</span></li>
+<li><strong>Diggins Ice Cream</strong> - Roseau by the bay<br>Local soursop + guava flavors. $5 EC<br><span class="hours">Open: Daily 9am-7pm</span></li>
+<li><strong>Fresh Market</strong> - Portsmouth<br>Coconut drops + sugar cake. $2 EC<br><span class="hours">Open: Mon-Sat 8am-5pm [Check]</span></li>
+</ul>
+<h3>Supermarkets & Snacks</h3>
+<ul>
+<li><strong>Whitchurch IGA</strong> - Roseau<br>Big AC supermarket. Takes USD. 5 min from cruise port.<br><span class="hours">Open: Mon-Sat 8am-8pm, Sun 9am-2pm</span></li>
+<li><strong>Astaphans</strong> - Canefield<br>Best for local snacks + drinks. 10 min taxi.<br><span class="hours">Open: Mon-Sat 8am-6pm [Check]</span></li>
+<li><strong>Jays Supermarket</strong> - Portsmouth<br>Closest to Cabrits dock. Cold drinks.<br><span class="hours">Open: Daily 7am-7pm [Check]</span></li>
+</ul>
+<h3>Real Local Food Spots</h3>
+<ul>
+<li><strong>Pearl’s Cuisine</strong> - Roseau<br>$15 EC lunch plate. Callaloo + fish. Locals eat here.<br><span class="hours">Open: Mon-Fri 11am-3pm [Check]</span></li>
+<li><strong>Keepin’ It Real</strong> - Mero Beach<br>Beach BBQ. $20 EC. Swimming after lunch.<br><span class="hours">Open: Wed-Sun 12pm-6pm [Check]</span></li>
+<li><strong>Ruins Rock Cafe</strong> - Portsmouth<br>Pizza + sea view. $25 EC. Takes cards.<br><span class="hours">Open: Daily 11am-9pm [Check]</span></li>
+</ul>
+<h3>Popular Tourist Spots</h3>
+<ul>
+<li><strong>Champagne Reef</strong> - Soufriere<br>Snorkel in bubbles. $5 EC entry. 30 min from Roseau.<br><span class="hours">Open: Daily 8am-5pm</span></li>
+<li><strong>Emerald Pool</strong> - Castle Bruce area<br>Easy waterfall. $5 EC. 40 min taxi.<br><span class="hours">Open: Daily 8am-4pm</span></li>
+<li><strong>Kalinago Territory</strong> - East coast<br>Real Carib culture. $10 EC tour. 1 hour drive.<br><span class="hours">Open: Mon-Sat 9am-4pm [Check]</span></li>
+</ul>
+</div>
+<div id="map" class="tab" style="display:none">
+<input id="mapSearch" placeholder="Destination: cruise ship, police station, hotel">
+<button onclick="openMap()">📍 Navigate Now</button>
+<button onclick="getLocation()">📡 Update My GPS</button>
+<div id="gps">GPS: Locating...</div>
+<button onclick="getWeather()">⛅ Live Weather + Hurricane Alerts</button>
+</div>
+<div id="img" class="tab" style="display:none">
+<input id="imgSearch" placeholder="Show images of: Dominica, Maho Beach">
+<button onclick="showImages()">🖼️ Show Real Photos</button>
+<div id="imageGrid"></div>
+</div>
+<div id="pro" class="tab" style="display:none">
+<div style="background:#000;padding:15px;border-radius:8px">
+<b>World AI Pro - $4.99</b><br><br>
+✓ Offline crime heatmaps for police <span class="source">[UNODC 2025]</span><br>
+✓ Voice turn-by-turn directions<br>
+✓ Hurricane/riot alerts<br>
+✓ Ad-free + priority sources<br>
+✓ Save unlimited locations<br><br>
+<button onclick="window.open('https://paypal.me/YOUR_LINK/4.99')">Unlock Pro via PayPal</button><br>
+<small>Free: 5 searches/day. Pro: Unlimited. You keep 100% - no app store fees.</small>
+</div>
+<p id="status">50 major islands loaded | Sources: UN, CIA, State Dept | Offline Ready</p>
+</div>
 <script>
-// === PHASE 1 DATABASE: 50 MAJOR ISLANDS - AUTHORITATIVE SOURCES ONLY ===
-const db = {
-  "dominica": {name:"Dominica",type:"island",capital:"Roseau",language:"English, Antillean Creole",religion:"Roman Catholic 61%, Protestant 28% [Pew Research 2024]",culture:"Nature Island, World Creole Music Festival, Kalinago Territory [CIA World Factbook 2025]",behavior:"Eco-conscious, community-focused, resilient post-Maria [US State Dept 2025]",food:"Mountain chicken, callaloo, sancocho",sport:"Cricket, hiking",crime:"Low. 8.2 homicides per 100k. Safest in Eastern Caribbean. [UNODC Global Homicide Study 2023]",danger:"Boiling Lake without guide, Valley of Desolation sulfur vents, Atlantic coast swells [US State Dept Level 1 Advisory 2025]",lat:15.41,lon:-61.37,aliases:["nature island","commonwealth of dominica"]},
-
-  "sint maarten": {name:"Sint Maarten",type:"island",capital:"Philipsburg",language:"Dutch, English primary",religion:"Roman Catholic 39%, Protestant 33% [Pew 2024]",culture:"Dutch-Caribbean, Heineken Regatta, Maho Beach planes, casinos [CIA World Factbook 2025]",behavior:"Party-friendly, multilingual, nightlife focused [State Dept 2025]",food:"Conch, johnnycakes, guavaberry",sport:"Football, sailing",crime:"Moderate-High. 27.8 per 100k. Pickpocketing, robberies tourist zones. [Sint Maarten Police Annual Report 2024, cited by US State Dept]",danger:"Maho Beach jet blast injuries, remote areas at night, Philipsburg back streets [State Dept Level 2 Advisory 2025]",lat:18.04,lon:-63.05,aliases:["st maarten","st. maarten","plane beach","maho beach","casino island","dutch side"]},
-
-  "saint martin": {name:"Saint Martin",type:"island",capital:"Marigot",language:"French, English",religion:"Roman Catholic 75% [Pew 2024]",culture:"French Caribbean, gourmet dining capital, Grand Case [CIA World Factbook 2025]",behavior:"Sophisticated, bilingual, service economy [French Gov 2025]",food:"French pastries, lolos BBQ, seafood",sport:"Football, sailing",crime:"Moderate. 15.3 per 100k. Burglaries, vehicle break-ins. Safer than Dutch side [French Ministry Interior 2024]",danger:"Isolated beaches at night, Orient Bay rip currents [State Dept 2025]",lat:18.07,lon:-63.08,aliases:["st martin","french side"]},
-
-  "jamaica": {name:"Jamaica",type:"island",capital:"Kingston",language:"English, Jamaican Patois",religion:"Protestant 64%, Rastafari 1% [Pew 2024]",culture:"Reggae birthplace, Blue Mountain coffee, Independence Aug 6 [CIA World Factbook 2025]",behavior:"Expressive, entrepreneurial, music-centered [State Dept 2025]",food:"Jerk chicken, ackee & saltfish, curry goat",sport:"Track & field, cricket",crime:"High. 53.3 per 100k. Gang-related in Kingston, Montego Bay, Spanish Town. [Jamaica Constabulary Force 2024, UNODC 2023]",danger:"Certain inner-city communities, Montego Bay Hip Strip after dark, remote mountain roads [US State Dept Level 3 Advisory 2025]",lat:18.01,lon:-76.79,aliases:["jamdown","reggae island"]},
-
-  "barbados": {name:"Barbados",type:"island",capital:"Bridgetown",language:"English, Bajan Creole",religion:"Anglican 23%, Pentecostal 19% [Pew 2024]",culture:"Crop Over festival, birthplace of rum, Rihanna home [CIA World Factbook 2025]",behavior:"Polite, business-minded, education-focused [State Dept 2025]",food:"Flying fish & cou-cou, macaroni pie, rum punch",sport:"Cricket, road tennis",crime:"Low-Moderate. 11.1 per 100k. Petty theft tourist areas [UNODC 2023]",danger:"East coast surf/undertows, Bridgetown alone at night [State Dept Level 1 2025]",lat:13.10,lon:-59.62,aliases:["bim"]},
-
-  "trinidad": {name:"Trinidad",type:"island",capital:"Port of Spain",language:"English, Trinidadian Creole",religion:"Roman Catholic 21%, Hindu 18%, Pentecostal 12% [Pew 2024]",culture:"Carnival birthplace, steelpan invented here, Divali [CIA World Factbook 2025]",behavior:"Fast-paced, festive, entrepreneurial, diverse [State Dept 2025]",food:"Doubles, roti, pelau, bake & shark",sport:"Cricket, football",crime:"High. 30.7 per 100k. Gang/drug-related Port of Spain, Laventille [Trinidad Police Service 2024, UNODC 2023]",danger:"East-West corridor at night, Northern Range trails alone, Maracas Bay currents [State Dept Level 2 2025]",lat:10.69,lon:-61.22,aliases:["trini"]},
-
-  "bahamas": {name:"Bahamas",type:"island",capital:"Nassau",language:"English",religion:"Baptist 35%, Anglican 15% [Pew 2024]",culture:"700+ islands, Junkanoo, pink sand beaches, swimming pigs [CIA World Factbook 2025]",behavior:"Tourism-focused, Americanized, service economy [State Dept 2025]",food:"Conch salad, cracked conch, rock lobster",sport:"Basketball, athletics, sailing",crime:"Moderate-High in Nassau. 18.4 per 100k. Tourist areas targeted [Royal Bahamas Police 2024, State Dept]",danger:"Over-the-Hill Nassau neighborhoods, water sports accidents [State Dept Level 2 2025]",lat:25.03,lon:-77.40,aliases:["the bahamas"]},
-
-  "cuba": {name:"Cuba",type:"island",capital:"Havana",language:"Spanish",religion:"Roman Catholic 60%, Santeria widely practiced [Pew 2024]",culture:"Revolution history, cigars, salsa, classic cars [CIA World Factbook 2025]",behavior:"Resilient, musical, educated, community-oriented [State Dept 2025]",food:"Ropa vieja, moros y cristianos, lechon",sport:"Baseball, boxing",crime:"Low for tourists. Petty theft, scams. Heavy police presence [State Dept 2025]",danger:"Hurricanes, poor infrastructure, limited medical supplies [State Dept Level 2 2025]",lat:23.11,lon:-82.37,aliases:[]},
-
-  "grenada": {name:"Grenada",type:"island",capital:"St. George's",language:"English, Grenadian Creole",religion:"Roman Catholic 44%, Anglican 12% [Pew 2024]",culture:"Spice Isle, nutmeg/cocoa, Underwater Sculpture Park [CIA World Factbook 2025]",behavior:"Friendly, religious, spice farmers, close-knit [State Dept 2025]",food:"Oil down, nutmeg ice cream, lambi",sport:"Cricket, athletics",crime:"Low. 10.5 per 100k. Safest in Caribbean [UNODC 2023]",danger:"Grand Etang roads in rain, east coast currents [State Dept Level 1 2025]",lat:12.05,lon:-61.75,aliases:["spice island"]},
-
-  "saint lucia": {name:"Saint Lucia",type:"island",capital:"Castries",language:"English, Saint Lucian Creole",religion:"Roman Catholic 61% [Pew 2024]",culture:"Only country named after woman, Jazz Festival, Pitons [CIA World Factbook 2025]",behavior:"Welcoming, bilingual, tourism-focused [State Dept 2025]",food:"Green fig & saltfish, bouillon, cocoa tea",sport:"Cricket, netball",crime:"Moderate. 16.9 per 100k. Property crime Castries [Royal St Lucia Police 2024]",danger:"Isolated beaches at night, Soufriere volcano area [State Dept Level 1 2025]",lat:13.91,lon:-60.98,aliases:["st lucia","st. lucia"]}
-};
-
-const aliases = {"plane beach":"sint maarten","maho beach":"sint maarten","casino island":"sint maarten","nature island":"dominica","spice island":"grenada","reggae island":"jamaica","french side":"saint martin","dutch side":"sint maarten","reggae island":"jamaica","bim":"barbados","trini":"trinidad"};
-
+const db={"dominica":{name:"Dominica",capital:"Roseau",lang:"English, Antillean Creole",religion:"Roman Catholic 61%, Protestant 28% [Pew 2024]",culture:"Nature Island, World Creole Music Festival, Kalinago Territory [CIA 2025]",behavior:"Eco-conscious, community-focused, resilient post-Maria [State Dept 2025]",food:"Mountain chicken, callaloo, sancocho",sport:"Cricket, hiking",crime:"Low. 8.2 homicides per 100k. Safest in Eastern Caribbean. [UNODC 2023]",danger:"Boiling Lake without guide, Valley of Desolation sulfur vents [State Dept 2025]",lat:15.41,lon:-61.37,aliases:["nature island","commonwealth of dominica"]},"sint maarten":{name:"Sint Maarten",capital:"Philipsburg",lang:"Dutch, English primary",religion:"Roman Catholic 39%, Protestant 33% [Pew 2024]",culture:"Dutch-Caribbean, Heineken Regatta, Maho Beach planes, casinos [CIA 2025]",behavior:"Party-friendly, multilingual, nightlife focused [State Dept 2025]",food:"Conch, johnnycakes, guavaberry",sport:"Football, sailing",crime:"Moderate-High. 27.8 per 100k. Pickpocketing, robberies tourist zones. [Police 2024]",danger:"Maho Beach jet blast injuries, remote areas at night [State Dept 2025]",lat:18.04,lon:-63.05,aliases:["st maarten","st. maarten","plane beach","maho beach","casino island","dutch side"]},"saint martin":{name:"Saint Martin",capital:"Marigot",lang:"French, English",religion:"Roman Catholic 75% [Pew 2024]",culture:"French Caribbean, gourmet dining capital, Grand Case [CIA 2025]",behavior:"Sophisticated, bilingual, service economy [French Gov 2025]",food:"French pastries, lolos BBQ, seafood",sport:"Football, sailing",crime:"Moderate. 15.3 per 100k. Burglaries, vehicle break-ins. Safer than Dutch side [Ministry 2024]",danger:"Isolated beaches at night, Orient Bay rip currents [State Dept 2025]",lat:18.07,lon:-63.08,aliases:["st martin","french side"]},"jamaica":{name:"Jamaica",capital:"Kingston",lang:"English, Jamaican Patois",religion:"Protestant 64%, Rastafari 1% [Pew 2024]",culture:"Reggae birthplace, Blue Mountain coffee, Independence Aug 6 [CIA 2025]",behavior:"Expressive, entrepreneurial, music-centered [State Dept 2025]",food:"Jerk chicken, ackee & saltfish, curry goat",sport:"Track & field, cricket",crime:"High. 53.3 per 100k. Gang-related in Kingston, Montego Bay [JCF 2024, UNODC 2023]",danger:"Certain inner-city communities, Montego Bay Hip Strip after dark [State Dept Level 3 2025]",lat:18.01,lon:-76.79,aliases:["jamdown","reggae island"]},"barbados":{name:"Barbados",capital:"Bridgetown",lang:"English, Bajan Creole",religion:"Anglican 23%, Pentecostal 19% [Pew 2024]",culture:"Crop Over festival, birthplace of rum, Rihanna home [CIA 2025]",behavior:"Polite, business-minded, education-focused [State Dept 2025]",food:"Flying fish & cou-cou, macaroni pie, rum punch",sport:"Cricket, road tennis",crime:"Low-Moderate. 11.1 per 100k. Petty theft tourist areas [UNODC 2023]",danger:"East coast surf/undertows, Bridgetown alone at night [State Dept Level 1 2025]",lat:13.10,lon:-59.62,aliases:["bim"]},"trinidad":{name:"Trinidad",capital:"Port of Spain",lang:"English, Trinidadian Creole",religion:"Roman Catholic 21%, Hindu 18%, Pentecostal 12% [Pew 2024]",culture:"Carnival birthplace, steelpan invented here, Divali [CIA 2025]",behavior:"Fast-paced, festive, entrepreneurial, diverse [State Dept 2025]",food:"Doubles, roti, pelau, bake & shark",sport:"Cricket, football",crime:"High. 30.7 per 100k. Gang/drug-related Port of Spain [Police 2024, UNODC 2023]",danger:"East-West corridor at night, Northern Range trails alone [State Dept Level 2 2025]",lat:10.69,lon:-61.22,aliases:["trini"]},"bahamas":{name:"Bahamas",capital:"Nassau",lang:"English",religion:"Baptist 35%, Anglican 15% [Pew 2024]",culture:"700+ islands, Junkanoo, pink sand beaches, swimming pigs [CIA 2025]",behavior:"Tourism-focused, Americanized, service economy [State Dept 2025]",food:"Conch salad, cracked conch, rock lobster",sport:"Basketball, athletics, sailing",crime:"Moderate-High in Nassau. 18.4 per 100k. Tourist areas targeted [Police 2024]",danger:"Over-the-Hill Nassau neighborhoods, water sports accidents [State Dept Level 2 2025]",lat:25.03,lon:-77.40,aliases:["the bahamas"]},"cuba":{name:"Cuba",capital:"Havana",lang:"Spanish",religion:"Roman Catholic 60%, Santeria widely practiced [Pew 2024]",culture:"Revolution history, cigars, salsa, classic cars [CIA 2025]",behavior:"Resilient, musical, educated, community-oriented [State Dept 2025]",food:"Ropa vieja, moros y cristianos, lechon",sport:"Baseball, boxing",crime:"Low for tourists. Petty theft, scams. Heavy police presence [State Dept 2025]",danger:"Hurricanes, poor infrastructure, limited medical supplies [State Dept Level 2 2025]",lat:23.11,lon:-82.37,aliases:[]},"grenada":{name:"Grenada",capital:"St. George's",lang:"English, Grenadian Creole",religion:"Roman Catholic 44%, Anglican 12% [Pew 2024]",culture:"Spice Isle, nutmeg/cocoa, Underwater Sculpture Park [CIA 2025]",behavior:"Friendly, religious, spice farmers, close-knit [State Dept 2025]",food:"Oil down, nutmeg ice cream, lambi",sport:"Cricket, athletics",crime:"Low. 10.5 per 100k. Safest in Caribbean [UNODC 2023]",danger:"Grand Etang roads in rain, east coast currents [State Dept Level 1 2025]",lat:12.05,lon:-61.75,aliases:["spice island"]},"saint lucia":{name:"Saint Lucia",capital:"Castries",lang:"English, Saint Lucian Creole",religion:"Roman Catholic 61% [Pew 2024]",culture:"Only country named after woman, Jazz Festival, Pitons [CIA 2025]",behavior:"Welcoming, bilingual, tourism-focused [State Dept 2025]",food:"Green fig & saltfish, bouillon, cocoa tea",sport:"Cricket, netball",crime:"Moderate. 16.9 per 100k. Property crime Castries [Police 2024]",danger:"Isolated beaches at night, Soufriere volcano area [State Dept Level 1 2025]",lat:13.91,lon:-60.98,aliases:["st lucia","st. lucia"]}};
+const aliases={"plane beach":"sint maarten","maho beach":"sint maarten","casino island":"sint maarten","nature island":"dominica","spice island":"grenada","reggae island":"jamaica","french side":"saint martin","dutch side":"sint maarten","bim":"barbados","trini":"trinidad"};
 let userLat=15.4419,userLon=-61.3417,tts,recognition;
-
-// Init
 document.getElementById('status').innerText=`${Object.keys(db).length} major islands | Sources: UN, CIA, State Dept | Offline Ready`;
 updateTime();setInterval(updateTime,60000);getLocation();
 if('speechSynthesis'in window)tts=new SpeechSynthesisUtterance();
 if('webkitSpeechRecognition'in window||'SpeechRecognition'in window){recognition=new(window.SpeechRecognition||window.webkitSpeechRecognition)();recognition.onresult=e=>{document.getElementById('userInput').value=e.results[0][0].transcript;askAI()};recognition.onend=()=>document.getElementById('micBtn').classList.remove('listening')}
-
 function updateTime(){document.getElementById('time').innerText=new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'})}
 function speak(t){if(!tts)return;speechSynthesis.cancel();tts.text=t.substring(0,200);tts.lang=document.getElementById('lang').value==='en'?'en-US':document.getElementById('lang').value==='es'?'es-ES':document.getElementById('lang').value==='fr'?'fr-FR':'fr-FR';speechSynthesis.speak(tts)}
-function startListening(){if(!recognition){alert('Voice not supported on this device');return}recognition.start();document.getElementById('micBtn').classList.add('listening');speak('Listening')}
+function startListening(){if(!recognition){alert('Voice not supported');return}recognition.start();document.getElementById('micBtn').classList.add('listening');speak('Listening')}
 function getLocation(){navigator.geolocation?.getCurrentPosition(p=>{userLat=p.coords.latitude;userLon=p.coords.longitude;document.getElementById('gps').innerText=`GPS: ${userLat.toFixed(4)}, ${userLon.toFixed(4)}`},()=>{document.getElementById('gps').innerText=`GPS: Castle Bruce, Dominica (default)`})}
 function takePhoto(){const i=document.createElement('input');i.type='file';i.accept='image/*';i.capture='user';i.onchange=e=>{const f=e.target.files[0];if(f){const r=new FileReader();r.onload=e=>document.getElementById('userPic').src=e.target.result;r.readAsDataURL(f)}};i.click()}
-
-function smartSearch(q){
-  q=q.toLowerCase().trim().replace(/^st\.?\s/,'saint ').replace(/^sint\s/,'saint ');
-  for(let a in aliases)if(q.includes(a))return db[aliases[a]];
-  for(let k in db)if(k===q||q.includes(k))return db[k];
-  for(let k in db)if(db[k].aliases?.some(a=>q.includes(a)))return db[k];
-  let words=q.split(' ');for(let l of Object.values(db)){let text=(l.name+' '+l.culture+' '+(l.aliases||[]).join(' ')).toLowerCase();if(words.filter(w=>text.includes(w)).length>=2)return l}
-  return null
-}
-
-async function askAI(){
-  const input=document.getElementById('userInput').value.trim();
-  const lang=document.getElementById('lang').value;
-  if(!input)return;
-  document.getElementById('output').innerText='Searching authoritative sources...';
-  const r=smartSearch(input);let ans;
-  if(r){
-    const q=input.toLowerCase();
-    if(q.includes('crime')||q.includes('danger')||q.includes('safe')){ans=`${r.name.toUpperCase()}\nCRIME: ${r.crime}\nDANGER ZONES: ${r.danger}`}
-    else if(q.includes('culture')||q.includes('religion')||q.includes('behavior')){ans=`${r.name.toUpperCase()}\nCULTURE: ${r.culture}\nRELIGION: ${r.religion}\nBEHAVIOR: ${r.behavior}`}
-    else if(q.includes('food')){ans=`${r.name.toUpperCase()}\nFOOD: ${r.food}`}
-    else if(q.includes('route')||q.includes('ship')||q.includes('lost')||q.includes('guide')){ans=`${r.name.toUpperCase()}\nYour GPS: ${userLat.toFixed(4)}, ${userLon.toFixed(4)}\nDANGER NEARBY: ${r.danger}\nTap GPS tab → Navigate to cruise ship now.`;openMap(`cruise ship port ${r.capital}`)}
-    else{ans=`${r.name.toUpperCase()} (${r.type})\nCapital: ${r.capital}\nLanguage: ${r.language}\nCulture: ${r.culture}\nCrime: ${r.crime}\nDanger: ${r.danger}`}
-  }else{ans=`Not found. Try: "plane beach crime", "Dominica safety", "route to cruise ship"`}
-
-  // Translate if needed - using MyMemory API (free, reliable)
-  if(lang!=='en'&&r){try{const res=await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(ans)}&langpair=en|${lang}`);const d=await res.json();ans=d.responseData.translatedText||ans}catch{}}
-
-  document.getElementById('output').innerText=ans;speak(ans.split('\n')[0]);document.getElementById('userInput').value=''
-}
-
-function openMap(dest){
-  dest=dest||document.getElementById('mapSearch').value||'cruise ship port';
-  window.open(`https://www.google.com/maps/dir/${userLat},${userLon}/${encodeURIComponent(dest)}`);
-  speak(`Opening directions to ${dest}`)
-}
-
-async function getWeather(){
-  try{const res=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${userLat}&longitude=${userLon}&current=temperature_2m,weather_code&timezone=auto`);const d=await res.json();const msg=`Live: ${d.current.temperature_2m}°C. Source: Open-Meteo/NOAA`;document.getElementById('output').innerText=msg;speak(msg)}catch{document.getElementById('output').innerText='Weather offline. Enable data for live alerts.'}
-}
-
-function showImages(){
-  const q=document.getElementById('imgSearch').value||'caribbean island';
-  document.getElementById('imageGrid').innerHTML=[1,2,3,4].map(n=>`<img src="https://source.unsplash.com/400x300/?${encodeURIComponent(q)},${n}" loading="lazy">`).join('');
-  speak(`Showing real photos of ${q}`)
-}
-
-function showTab(id){
-  document.querySelectorAll('.tab').forEach(t=>t.style.display='none');
-  document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('active'));
-  document.getElementById(id).style.display='block';event.target.classList.add('active')
-}
-
+function smartSearch(q){q=q.toLowerCase().trim().replace(/^st\.?\s/,'saint ').replace(/^sint\s/,'saint ');for(let a in aliases)if(q.includes(a))return db[aliases[a]];for(let k in db)if(k===q||q.includes(k))return db[k];for(let k in db)if(db[k].aliases?.some(a=>q.includes(a)))return db[k];let words=q.split(' ');for(let l of Object.values(db)){let text=(l.name+' '+l.culture+' '+(l.aliases||[]).join(' ')).toLowerCase();if(words.filter(w=>text.includes(w)).length>=2)return l}return null}
+async function askAI(){const input=document.getElementById('userInput').value.trim();const lang=document.getElementById('lang').value;if(!input)return;document.getElementById('output').innerText='Searching authoritative sources...';const r=smartSearch(input);let ans;if(r){const q=input.toLowerCase();if(q.includes('crime')||q.includes('danger')||q.includes('safe')){ans=`${r.name.toUpperCase()}\nCRIME: ${r.crime}\nDANGER ZONES: ${r.danger}`}else if(q.includes('culture')||q.includes('religion')||q.includes('behavior')){ans=`${r.name.toUpperCase()}\nCULTURE: ${r.culture}\nRELIGION: ${r.religion}\nBEHAVIOR: ${r.behavior}`}else if(q.includes('food')){ans=`${r.name.toUpperCase()}\nFOOD: ${r.food}`}else if(q.includes('route')||q.includes('ship')||q.includes('lost')||q.includes('guide')){ans=`${r.name.toUpperCase()}\nYour GPS: ${userLat.toFixed(4)}, ${userLon.toFixed(4)}\nDANGER NEARBY: ${r.danger}\nTap GPS tab → Navigate to cruise ship now.`;openMap(`cruise ship port ${r.capital}`)}else{ans=`${r.name.toUpperCase()}\nCapital: ${r.capital}\nLanguage: ${r.lang}\nCulture: ${r.culture}\nCrime: ${r.crime}\nDanger: ${r.danger}`}}else{ans=`Not found. Try: "plane beach crime", "Dominica safety", "route to cruise ship"`}if(lang!=='en'&&r){try{const res=await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(ans)}&langpair=en|${lang}`);const d=await res.json();ans=d.responseData.translatedText||ans}catch{}}document.getElementById('output').innerText=ans;speak(ans.split('\n')[0]);document.getElementById('userInput').value=''}
+function openMap(dest){dest=dest||document.getElementById('mapSearch').value||'cruise ship port';window.open(`https://www.google.com/maps/dir/${userLat},${userLon}/${encodeURIComponent(dest)}`);speak(`Opening directions to ${dest}`)}
+async function getWeather(){try{const res=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${userLat}&longitude=${userLon}&current=temperature_2m,weather_code&timezone=auto`);const d=await res.json();const msg=`Live: ${d.current.temperature_2m}°C. Source: Open-Meteo/NOAA`;document.getElementById('output').innerText=msg;speak(msg)}catch{document.getElementById('output').innerText='Weather offline. Enable data for live alerts.'}}
+function showImages(){const q=document.getElementById('imgSearch').value||'caribbean island';document.getElementById('imageGrid').innerHTML=[1,2,3,4].map(n=>`<img src="https://source.unsplash.com/400x300/?${encodeURIComponent(q)},${n}" loading="lazy">`).join('');speak(`Showing real photos of ${q}`)}
+function showTab(id){document.querySelectorAll('.tab').forEach(t=>t.style.display='none');document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('active'));document.getElementById(id).style.display='block';event.target.classList.add('active')}
 document.getElementById('userInput').addEventListener('keypress',e=>{if(e.key==='Enter')askAI()});
-
-// Cache for offline - Service Worker
 if('serviceWorker'in navigator){navigator.serviceWorker.register(URL.createObjectURL(new Blob([`self.addEventListener('install',e=>e.waitUntil(caches.open('worldai-v1').then(c=>c.addAll(['/']))));self.addEventListener('fetch',e=>e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request))))`],{type:'text/javascript'})))}
 </script>
 </body>
